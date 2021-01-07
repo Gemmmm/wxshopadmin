@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tc.wx.dao.ShopUserMapper">
+
+    <resultMap id="WithUSResultMap" type="com.tc.wx.model.ShopUser">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="openid" jdbcType="VARCHAR" property="openid"/>
+        <result column="token" jdbcType="VARCHAR" property="token"/>
+        <result column="brand" jdbcType="VARCHAR" property="brand"/>
+        <result column="model" jdbcType="VARCHAR" property="model"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="phonesystem" jdbcType="VARCHAR" property="phonesystem"/>
+        <result column="platform" jdbcType="VARCHAR" property="platform"/>
+        <result column="sdk_version" jdbcType="VARCHAR" property="sdkVersion"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="user_type" jdbcType="VARCHAR" property="userType"/>
+        <result column="is_user_time" jdbcType="TIMESTAMP" property="isUserTime"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+
+        <result column="tx_img" jdbcType="VARCHAR" property="txImg"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="look_shop_num" jdbcType="INTEGER" property="lookShopNum"/>
+        <result column="look_card_num" jdbcType="INTEGER" property="lookCardNum"/>
+        <result column="last_look_time" jdbcType="TIMESTAMP" property="lastLookTime"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="house_area" jdbcType="VARCHAR" property="houseArea"/>
+        <result column="budget" jdbcType="VARCHAR" property="budget"/>
+        <result column="zx_level" jdbcType="VARCHAR" property="zxLevel"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="livingroom" jdbcType="VARCHAR" property="livingroom"/>
+        <result column="dinerroom" jdbcType="VARCHAR" property="dinerroom"/>
+        <result column="kitchen" jdbcType="VARCHAR" property="kitchen"/>
+        <result column="bedroom" jdbcType="VARCHAR" property="bedroom"/>
+    </resultMap>
+    <select id="selectByOrder" parameterType="map" resultMap="WithUSResultMap">
+        SELECT
+        shop_user.id,
+        livingroom,dinerroom,kitchen,bedroom
+        openid,
+        token,
+        brand,
+        model,
+        version,
+        phonesystem,
+        platform,
+        sdk_version,
+        shop_user.create_time,
+        user_type,
+        is_user_time,
+        ip,
+        username,
+        tx_img,
+        phone,
+        nick_name,
+        look_shop_num,
+        look_card_num,
+        last_look_time,
+        province,
+        city,
+        country,
+        house_area,
+        budget,
+        zx_level,
+        remarks
+        FROM
+        shop_user_seller
+        JOIN shop_user ON shop_user.id = shop_user_seller.user_id
+        where 1=1
+        <if test="param1!=null">
+            and shop_user_seller.shop_id=#{param1,jdbcType=INTEGER}
+        </if>
+        <if test="param3!=null">
+
+            and user_type=#{param3,jdbcType=VARCHAR}
+        </if>
+
+        <if test="param2 != null">
+            order by #{param2}
+        </if>
+
+    </select>
+
+    <select id="selectByShopIdAndDateAndUserType" parameterType="map" resultMap="WithUSResultMap">
+        SELECT
+        shop_user.id,
+        livingroom,dinerroom,kitchen,bedroom
+        openid,
+        token,
+        brand,
+        model,
+        version,
+        phonesystem,
+        platform,
+        sdk_version,
+        shop_user.create_time,
+        user_type,
+        is_user_time,
+        ip,
+        username,
+        tx_img,
+        phone,
+        nick_name,
+        look_shop_num,
+        look_card_num,
+        last_look_time,
+        province,
+        city,
+        country,
+        house_area,
+        budget,
+        zx_level,
+        remarks
+        FROM
+        shop_user_seller
+        JOIN shop_user ON shop_user.id = shop_user_seller.user_id
+        where 1=1
+        <if test="param1!=null">
+            and shop_user_seller.shop_id=#{param1,jdbcType=INTEGER}
+        </if>
+        <if test="param2!=null">
+            and user_type=#{param2,jdbcType=VARCHAR}
+            <if test="param2='1'">
+                and is_user_time=#{param3,jdbcType=TIMESTAMP}
+            </if>
+            <if test="param2='0'">
+                and shop_user.create_time=#{param3,jdbcType=TIMESTAMP}
+            </if>
+
+        </if>
+
+
+    </select>
+
+</mapper>
